@@ -5511,6 +5511,14 @@ rocksdb_slicetransform_t* rocksdb_slicetransform_create_fixed_prefix(
   return wrapper;
 }
 
+rocksdb_slicetransform_t* rocksdb_slicetransform_create_capped_prefix(
+    size_t prefixLen) {
+  SliceTransformWrapper* wrapper = new SliceTransformWrapper;
+  wrapper->rep_ = ROCKSDB_NAMESPACE::NewCappedPrefixTransform(prefixLen);
+  wrapper->state_ = nullptr;
+  wrapper->destructor_ = &SliceTransformWrapper::DoNothing;
+  return wrapper;
+}
 rocksdb_slicetransform_t* rocksdb_slicetransform_create_noop() {
   SliceTransformWrapper* wrapper = new SliceTransformWrapper;
   wrapper->rep_ = ROCKSDB_NAMESPACE::NewNoopTransform();
